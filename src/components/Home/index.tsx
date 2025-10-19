@@ -4,6 +4,8 @@ import { BadgeFilter } from "./components/HomePageBadge";
 import { HomeHeader } from "./components/HomePageHeader";
 import { cn } from "@/lib/utils";
 import { CardItem } from "./components/CardItem";
+import { CreateCardComponent } from "./components/CreateProjectCard";
+import { CardFolders } from "./components/CardFolders";
 
 export function HomePageComponent() {
   const { activeFilter, handleFilterClick } = useFilter();
@@ -53,15 +55,20 @@ export function HomePageComponent() {
     },
   ];
   return (
-    <div className="flex w-full h-full flex-col gap-6 items-center justify-center rounded-lg bg-white border-slate-400 overflow-hidden pt-6">
-      <div className="w-full flex flex-col items-center h-16 gap-2">
+    <div className="flex w-full min-h-0 flex-col gap-6 items-center justify-center rounded-lg bg-white border-slate-400 pt-6">
+      <div className="w-full flex flex-col items-center h-16 gap-2 sticky top-0 z-50">
         <HomeHeader />
         <div className="flex-1 w-full px-3">
           <BadgeFilter filters={filters} className="mb-4" />
         </div>
       </div>
-      <div className="flex-1 w-full p-4">
+      <div className="flex-1 flex flex-row w-full p-4 gap-6">
+        <CreateCardComponent className="" />
         <CardItem description="descrição exemplo" title="Titulo exemplo" />
+      </div>
+      <div className="flex-1 flex flex-col w-full p-4 gap-6">
+        <h1>Pastas</h1>
+        <CardFolders />
       </div>
     </div>
   );

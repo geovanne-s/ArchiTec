@@ -12,12 +12,15 @@ import { Input } from "../ui/input";
 import { useNavigate } from "react-router";
 import { AuthServices } from "@/services/AuthServices";
 import { toast } from "sonner";
+import { useAppDispatch } from "@/hooks/hooks";
+import { setCredentials } from "@/store/authSlice";
 
 export function LoginPageComponent({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +34,16 @@ export function LoginPageComponent({
     const result = await AuthServices(formData);
 
     if (result.success) {
-      navigate("/dashboard", { replace: true });
+      dispatch(
+        setCredentials({
+          user: {
+            name: import.meta.env.VITE_USER_NAME as string,
+            email: email as string,
+          },
+          isAuthenticated: true,
+        })
+      );
+      navigate("/home", { replace: true });
     } else {
       toast.error(result.message);
     }

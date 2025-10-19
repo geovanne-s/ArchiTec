@@ -1,36 +1,25 @@
-"use client";
-
 import { LogoutIcon } from "@/assets/icons";
 import { Avatar } from "@/components/ui/avatar";
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
-import { Button } from "../ui/button";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { getInitials } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-
-interface User {
-  name?: string;
-  email?: string;
-}
+import { logout } from "@/store/authSlice";
+import { useNavigate } from "react-router";
+import { Button } from "../ui/button";
 
 interface NavItensProps {
   isOpen?: boolean;
 }
 
 export function NavUser({ isOpen }: NavItensProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    try {
-      const userString = localStorage.getItem("user");
-      if (userString) {
-        const userData: User = JSON.parse(userString);
-        setUser(userData);
-      }
-    } catch (error) {
-      toast.error(error as string);
-    }
-  }, []);
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/", { replace: true });
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem className="flex items-center bg-white p-3 rounded-lg  min-w-[50px]">
@@ -45,7 +34,11 @@ export function NavUser({ isOpen }: NavItensProps) {
             </div>
           </>
         )}
-        <Button variant={"ghost"} className="hover:cursor-pointer">
+        <Button
+          variant={"ghost"}
+          className="hover:cursor-pointer"
+          onClick={handleLogout}
+        >
           <LogoutIcon className="text-red-500 !h-5 !w-5" />
         </Button>
       </SidebarMenuItem>

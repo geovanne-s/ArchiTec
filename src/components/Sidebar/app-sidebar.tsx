@@ -70,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           )}
         >
           <SideBarHeader isCollapsed={open} />
-          {open && <SidebarTrigger className="-ml-1" />}
+          {open && <SidebarTrigger />}
         </div>
       </SidebarHeader>
       <SidebarContent>

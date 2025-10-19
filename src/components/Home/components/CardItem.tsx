@@ -18,7 +18,7 @@ export function CardItem({
     <Card
       className={cn(
         className,
-        "max-w-60 h-60 bg-slate-100 flex justify-end p-0 overflow-hidden hover:cursor-pointer"
+        "max-w-60 min-w-60 h-60 bg-slate-100 flex justify-end p-0 overflow-hidden hover:cursor-pointer"
       )}
       onClick={() => console.log("Abrir Prajeira: ", id)}
     >
