@@ -44,7 +44,7 @@ export function NavMain({
               className={cn(
                 !open
                   ? "w-[75%] justify-center flex gap-2 items-center p-1 rounded-full hover:cursor-pointer hover:bg-white"
-                  : "p-1 justify-start flex gap-2 items-center rounded-sm w-full",
+                  : "p-1 justify-start flex gap-2 items-center rounded-sm w-full hover:cursor-pointer hover:bg-white",
                 isActive(item.url) && "bg-white"
               )}
             >

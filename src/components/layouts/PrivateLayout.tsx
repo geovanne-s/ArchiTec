@@ -17,7 +17,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!open && <SidebarTrigger className="absolute top-4 left-2 z-50" />}
-      <div className={cn("min-h-0", open ? "p-2" : "pl-10 pt-2 pb-2 pr-2")}>
+      <div
+        className={cn(
+          "flex flex-col h-full w-full",
+          open ? "p-2" : "pl-10 pt-2 pb-2 pr-2"
+        )}
+      >
         {children}
       </div>
     </>
@@ -29,7 +34,10 @@ export function PrivateLayout({ children }: PrivateLayoutProps) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset
-        className={cn("relative bg-[var(--sidebar)] !overflow-hidden")}
+        className={cn(
+          "relative bg-[var(--sidebar)] !overflow-hidden",
+          "min-h-svh h-svh flex flex-col"
+        )}
       >
         <LayoutContent>{children}</LayoutContent>
       </SidebarInset>

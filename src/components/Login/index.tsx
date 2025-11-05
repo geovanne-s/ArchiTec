@@ -1,4 +1,9 @@
+import { useAppDispatch } from "@/hooks/hooks";
 import { cn } from "@/lib/utils";
+import { AuthServices } from "@/services/AuthServices";
+import { setCredentials } from "@/store/authSlice";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -7,13 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { FieldGroup, Field, FieldLabel, FieldDescription } from "../ui/field";
+import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-import { useNavigate } from "react-router";
-import { AuthServices } from "@/services/AuthServices";
-import { toast } from "sonner";
-import { useAppDispatch } from "@/hooks/hooks";
-import { setCredentials } from "@/store/authSlice";
 
 export function LoginPageComponent({
   className,
@@ -49,13 +49,19 @@ export function LoginPageComponent({
     }
   };
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+    <div
+      className={cn(
+        "flex flex-col gap-6 w-full items-center justify-center h-[100dvh]",
+        className
+      )}
+      {...props}
+    >
+      <Card className=" w-[50%]">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+          <div className="flex flex-col items-center">
+            <CardTitle>ArchiTec</CardTitle>
+            <CardDescription>Soluções para Moveis Projetados</CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
@@ -83,10 +89,12 @@ export function LoginPageComponent({
                 <Input id="password" type="password" name="password" required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription>
+                <Button
+                  type="submit"
+                  className="bg-lime-400 font-bold hover:bg-lime-600 hover:cursor-pointer"
+                >
+                  Login
+                </Button>
               </Field>
             </FieldGroup>
           </form>

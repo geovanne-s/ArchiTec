@@ -3,12 +3,14 @@ import { PrivateLayout } from "./components/layouts/PrivateLayout";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import { LoginPageComponent } from "./components/Login";
 import { HomePage } from "./pages/HomePage";
+import { IaPage } from "./pages/IaPage";
 
 const LoginPage = () => <LoginPageComponent />;
 const RegisterPage = () => <h1>Registro (Rota Pública)</h1>;
 
 const HomePageComponent = () => <HomePage />;
-const ProfilePage = () => <h1>Perfil (Rota Privada)</h1>;
+const FoldersPage = () => <h1>Perfil (Rota Privada)</h1>;
+const IaPageComponent = () => <IaPage />;
 
 function App() {
   return (
@@ -23,7 +25,8 @@ function App() {
             <PrivateLayout>
               <Routes>
                 <Route path="/home" element={<HomePageComponent />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/folders" element={<FoldersPage />} />
+                <Route path="/ia" element={<IaPageComponent />} />
               </Routes>
             </PrivateLayout>
           }

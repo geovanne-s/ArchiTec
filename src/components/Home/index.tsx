@@ -55,20 +55,24 @@ export function HomePageComponent() {
     },
   ];
   return (
-    <div className="flex w-full min-h-0 flex-col gap-6 items-center justify-center rounded-lg bg-white border-slate-400 pt-6">
-      <div className="w-full flex flex-col items-center h-16 gap-2 sticky top-0 z-50">
+    <div className="flex w-full flex-1 flex-col gap-6 items-center rounded-lg bg-white border-slate-400">
+      <div className="w-full flex flex-col items-center sticky top-0 z-10 bg-white/95 backdrop-blur-sm pt-6 pb-2">
         <HomeHeader />
         <div className="flex-1 w-full px-3">
           <BadgeFilter filters={filters} className="mb-4" />
         </div>
       </div>
-      <div className="flex-1 flex flex-row w-full p-4 gap-6">
-        <CreateCardComponent className="" />
-        <CardItem description="descrição exemplo" title="Titulo exemplo" />
-      </div>
-      <div className="flex-1 flex flex-col w-full p-4 gap-6">
-        <h1>Pastas</h1>
-        <CardFolders />
+      <div
+        className={cn("flex flex-col w-full p-4 gap-6 overflow-y-auto flex-1")}
+      >
+        <div className="flex flex-row w-full gap-6">
+          <CreateCardComponent className="" />
+          <CardItem description="descrição exemplo" title="Titulo exemplo" />
+        </div>
+        <div className="flex flex-col w-full gap-6">
+          <h1>Pastas</h1>
+          <CardFolders />
+        </div>
       </div>
     </div>
   );

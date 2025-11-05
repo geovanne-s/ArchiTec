@@ -61,6 +61,35 @@
   }
   body {
     @apply bg-background text-foreground;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-muted);
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    height: 8px; /* ← Isso controla a ALTURA da barra horizontal */
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #94f4b9;
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94f4b9;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
   }
   :root {
     --radius: 0.625rem;

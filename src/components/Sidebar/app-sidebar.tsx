@@ -49,7 +49,7 @@ const data = {
     },
     {
       title: "ArchiAi",
-      url: "#",
+      url: "/ia",
       icon: <AiFileIcon className="!h-6 !w-6" />,
     },
   ],
