@@ -19,7 +19,7 @@ const formatMessageContent = (text: string) => {
 
   const tableRegex = /\|(.+?)\|[\s\n]*\|(---+\|)+[\s\n]*((?:\|.+\|[\s\n]*)*)/g;
 
-  text = text.replace(tableRegex, (match, header, separator, rows) => {
+  text = text.replace(tableRegex, (header, rows) => {
     const headers = header
       .split("|")
       .map((h: string) => h.trim())
