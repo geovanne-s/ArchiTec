@@ -15,3 +15,18 @@ export function getInitials(name: string | null | undefined): string {
 
   return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
 }
+
+export function formatCurrencyBRL(
+  value: number | string | null | undefined
+): string {
+  const num = typeof value === "string" ? parseFloat(value) : value;
+
+  if (num === null || num === undefined || isNaN(num)) {
+    return "R$ 0,00";
+  }
+
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(num);
+}

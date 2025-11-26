@@ -3,22 +3,73 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/hooks";
 import { getInitials } from "@/lib/utils";
 import { CheckCheck, Copy } from "lucide-react";
-interface Message {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-  timestamp: Date;
-}
+import type { Message } from "@/store/chatSlice";
 
 type MessagesComponentsProps = {
-  formatTime: (date: Date) => string;
+  formatTime: (isoDate: string) => string;
   copyToClipboard: (content: string, messageId: string) => Promise<void>;
   copiedId?: string | null;
   messages?: Message[];
 };
 
+const formatMessageContent = (text: string) => {
+  text = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+
+  text = text.replace(/\n/g, "<br>");
+
+  const tableRegex = /\|(.+?)\|[\s\n]*\|(---+\|)+[\s\n]*((?:\|.+\|[\s\n]*)*)/g;
+
+  text = text.replace(tableRegex, (match, header, separator, rows) => {
+    const headers = header
+      .split("|")
+      .map((h: string) => h.trim())
+      .filter((h: string) => h);
+    const rowsArray = rows
+      .trim()
+      .split("\n")
+      .map((row: string) =>
+        row
+          .split("|")
+          .map((cell: string) => cell.trim())
+          .filter((cell: string) => cell)
+      )
+      .filter((row: string[]) => row.length > 0);
+
+    let tableHTML =
+      '<table class="message-table w-full border-collapse my-3 text-sm"><thead><tr>';
+    headers.forEach((h: string) => {
+      tableHTML += `<th class="border p-2 bg-gray-200 dark:bg-gray-600 text-left font-semibold">${h}</th>`;
+    });
+    tableHTML += "</tr></thead><tbody>";
+
+    rowsArray.forEach((row: string[]) => {
+      const isTotalRow = row.some(
+        (cell: string) =>
+          cell.toLowerCase().includes("total") ||
+          cell.toLowerCase().includes("valor total")
+      );
+      tableHTML += `<tr class="${
+        isTotalRow
+          ? "font-bold bg-gray-100 dark:bg-gray-700"
+          : "hover:bg-gray-50 dark:hover:bg-gray-700/50"
+      }">`;
+      row.forEach((cell: string) => {
+        tableHTML += `<td class="border p-2">${cell}</td>`;
+      });
+      tableHTML += "</tr>";
+    });
+
+    tableHTML += "</tbody></table>";
+
+    return tableHTML;
+  });
+
+  return <div dangerouslySetInnerHTML={{ __html: text }} />;
+};
+
 export function MessagesComponent(props: MessagesComponentsProps) {
   const user = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="p-6 flex flex-col gap-6">
       {props.messages &&
@@ -26,27 +77,28 @@ export function MessagesComponent(props: MessagesComponentsProps) {
           <div
             key={message.id}
             className={`flex gap-4 ${
-              message.role === "user" ? "flex-row-reverse" : "flex-row"
+              // Ajustar de role para sender
+              message.sender === "user" ? "flex-row-reverse" : "flex-row"
             }`}
           >
             <Avatar
               className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                message.role === "user" ? "bg-green-300" : "bg-blue-300"
+                message.sender === "user" ? "bg-green-300" : "bg-blue-300"
               }`}
             >
               <AvatarFallback className="text-slate-600 font-bold mt-1 bg-transparent h-full w-full flex items-center justify-center">
-                {message.role === "user" ? getInitials(user?.name) : "IA"}
+                {message.sender === "user" ? getInitials(user?.name) : "AI"}
               </AvatarFallback>
             </Avatar>
 
             <div
               className={`flex-1 space-y-2 ${
-                message.role === "user" ? "max-w-[80%]" : "max-w-[80%]"
+                message.sender === "user" ? "max-w-[80%]" : "max-w-[80%]"
               }`}
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-gray-700">
-                  {message.role === "user" ? `${user?.name}` : "ArchiIa"}
+                  {message.sender === "user" ? `${user?.name}` : "ArchiAi"}
                 </span>
                 <span className="text-xs text-muted-foreground">
                   {props.formatTime(message.timestamp)}
@@ -55,13 +107,14 @@ export function MessagesComponent(props: MessagesComponentsProps) {
 
               <div
                 className={`rounded-lg p-4 ${
-                  message.role === "user" ? "bg-green-200" : "bg-blue-200"
+                  message.sender === "user" ? "bg-green-200" : "bg-blue-200"
                 }`}
               >
-                <div className="whitespace-pre-wrap">{message.content}</div>
+                {/* Usar a função de formatação */}
+                {formatMessageContent(message.content)}
               </div>
 
-              {message.role === "assistant" && (
+              {message.sender === "bot" && (
                 <Button
                   variant="ghost"
                   size="sm"

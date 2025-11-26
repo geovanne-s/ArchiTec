@@ -43,7 +43,7 @@ export function LoginPageComponent({
           isAuthenticated: true,
         })
       );
-      navigate("/home", { replace: true });
+      navigate("/splash", { replace: true });
     } else {
       toast.error(result.message);
     }

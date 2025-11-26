@@ -4,9 +4,11 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import { LoginPageComponent } from "./components/Login";
 import { HomePage } from "./pages/HomePage";
 import { IaPage } from "./pages/IaPage";
+import { SplashComponent } from "./components/Splash";
 
 const LoginPage = () => <LoginPageComponent />;
 const RegisterPage = () => <h1>Registro (Rota Pública)</h1>;
+const SplashPage = () => <SplashComponent />;
 
 const HomePageComponent = () => <HomePage />;
 const FoldersPage = () => <h1>Perfil (Rota Privada)</h1>;
@@ -17,6 +19,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/splash" element={<SplashPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route
