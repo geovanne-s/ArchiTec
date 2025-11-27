@@ -14,6 +14,7 @@ import {
 } from "../ui/card";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
+import { Quio, Solutions } from "@/assets/icons";
 
 export function LoginPageComponent({
   className,
@@ -51,55 +52,72 @@ export function LoginPageComponent({
   return (
     <div
       className={cn(
-        "flex flex-col gap-6 w-full items-center justify-center h-[100dvh]",
+        "flex w-full items-center justify-center h-[100dvh] bg-[#1E1E1E]",
         className
       )}
       {...props}
     >
-      <Card className=" w-[50%]">
-        <CardHeader>
-          <div className="flex flex-col items-center">
-            <CardTitle>ArchiTec</CardTitle>
-            <CardDescription>Soluções para Moveis Projetados</CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+      <div className="w-[40%] items-center justify-center flex flex-col gap-4">
+        <Quio width={150} height={70} className="text-white" />
+        <Solutions width={200} height={22} className="text-white" />
+      </div>
+      <div className="w-[50%] h-full flex items-center justify-center">
+        <Card className="w-[60%] h-[60%] flex flex-col justify-center bg-white/15 border-none">
+          <CardHeader className="mb-14">
+            <div className="flex flex-col items-center">
+              <CardTitle className="text-4xl text-white">Quio</CardTitle>
+              <CardDescription className="text-white">
+                Soluções para Moveis Projetados
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="email" className="text-white">
+                    Email
+                  </FieldLabel>
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="m@example.com"
+                    required
+                  />
+                </Field>
+                <Field>
+                  <div className="flex items-center">
+                    <FieldLabel htmlFor="password" className="text-white">
+                      Password
+                    </FieldLabel>
+                    {/*   <a
+                      href="#"
+                      className="ml-auto inline-block text-sm underline-offset-4 hover:underline text-white"
+                    >
+                      Forgot your password?
+                    </a> */}
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    name="password"
+                    required
+                  />
+                </Field>
+                <Field>
+                  <Button
+                    type="submit"
+                    className="bg-black font-bold hover:bg-slate-950 hover:cursor-pointer"
                   >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" name="password" required />
-              </Field>
-              <Field>
-                <Button
-                  type="submit"
-                  className="bg-lime-400 font-bold hover:bg-lime-600 hover:cursor-pointer"
-                >
-                  Login
-                </Button>
-              </Field>
-            </FieldGroup>
-          </form>
-        </CardContent>
-      </Card>
+                    Login
+                  </Button>
+                </Field>
+              </FieldGroup>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

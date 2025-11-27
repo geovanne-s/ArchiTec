@@ -6,3 +6,8 @@ export { HomeIcon } from "./Home";
 export { SaveIcon } from "./Save";
 export { PlaningIcon } from "./Planing";
 export { ClockIcon } from "./Clock";
+export { Multiple } from "./Multiple";
+export { Unique } from "./Unique";
+export { Microphone } from "./Microphone";
+export { Quio } from "./Quio";
+export { Solutions } from "./Solutions";
