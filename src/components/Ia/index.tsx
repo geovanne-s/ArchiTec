@@ -15,17 +15,14 @@ import { MessagesComponent } from "./components/Messages";
 import { NoContentComponent } from "./components/NoContent";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import {
-  setMode,
   sendSingleChat,
   extractProducts,
   generateMultipleQuote,
   addMessage,
   clearProductList,
   removeProduct,
-  type ChatMode,
 } from "@/store/chatSlice";
 import { cn, formatCurrencyBRL } from "@/lib/utils";
-// IMPORTAÇÕES NOVAS/AJUSTADAS
 import { VoiceModal } from "./components/VoiceModal";
 import { useSpeechRecognition } from "@/hooks/use-speech-recongnition";
 import {
@@ -33,6 +30,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
+import { ModeSelectionComponent } from "./components/ModeSeletion";
 
 const API_BASE_URL = "http://localhost:5001";
 
@@ -50,30 +48,23 @@ export function IaComponent() {
 
   const isLoading = status === "loading";
 
-  // --- Lógica de Reconhecimento de Fala ---
-  // Callback que recebe o texto finalizado quando o usuário para de falar
   const handleVoiceResult = useCallback((transcript: string) => {
-    // Coloca o texto transcrito no input para o usuário revisar
     if (transcript.trim()) {
       setInput(transcript.trim());
     }
   }, []);
 
-  // Inicializa o hook de voz
   const {
     isListening,
     transcript,
     error: voiceError,
     startListening,
     stopListening,
-    // clearTranscript // Não é necessário chamar, pois o hook gerencia
   } = useSpeechRecognition(handleVoiceResult);
 
-  // Efeito para lidar com erros de voz (opcional: pode usar toast)
   useEffect(() => {
     if (voiceError) {
       console.error("Erro de Voz:", voiceError);
-      // Aqui você poderia usar o 'toast.error(voiceError)' se estivesse importado
     }
   }, [voiceError]);
 
@@ -119,11 +110,6 @@ export function IaComponent() {
     }
   };
 
-  const handleSetMode = (newMode: ChatMode) => {
-    if (newMode === mode) return;
-    dispatch(setMode(newMode));
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -148,7 +134,6 @@ export function IaComponent() {
     });
   };
 
-  // --- UI Components renderProductListUI e renderPdfArea (Mantidos) ---
   const renderProductListUI = () => {
     if (mode !== "multiple") return null;
 
@@ -169,7 +154,6 @@ export function IaComponent() {
               <h3 className="text-sm font-bold">
                 Itens do Orçamento ({productList.length})
               </h3>
-              {/* Indicador de expansão/colapso */}
               <Button variant="ghost" size="icon-sm">
                 {isProductListOpen ? (
                   <ChevronDown className="h-4 w-4" />
@@ -181,7 +165,6 @@ export function IaComponent() {
           </CollapsibleTrigger>
         </div>
 
-        {/* O conteúdo que será recolhido */}
         <CollapsibleContent>
           <div className="p-4 pt-0">
             <div className="flex justify-end items-center mb-3">
@@ -282,7 +265,6 @@ export function IaComponent() {
 
   return (
     <div className="flex h-screen w-full md:w-[70%] overflow-hidden flex-col bg-white">
-      {/* Renderiza o modal de voz */}
       <VoiceModal
         isOpen={isListening}
         onStop={stopListening}
@@ -291,33 +273,6 @@ export function IaComponent() {
         }
         transcript={transcript}
       />
-
-      {/* Botões de Seleção de Modo */}
-      <div className="p-4 border-b flex justify-center items-center gap-4 bg-gray-50 dark:bg-gray-800">
-        <h2 className="text-lg font-bold">Modo:</h2>
-        <Button
-          onClick={() => handleSetMode("single")}
-          variant={mode === "single" ? "default" : "outline"}
-          className={cn(
-            mode === "single" && "bg-green-500 hover:bg-green-600 text-white"
-          )}
-          disabled={isLoading || isListening}
-          size="sm"
-        >
-          Orçamento Único
-        </Button>
-        <Button
-          onClick={() => handleSetMode("multiple")}
-          variant={mode === "multiple" ? "default" : "outline"}
-          className={cn(
-            mode === "multiple" && "bg-blue-500 hover:bg-blue-600 text-white"
-          )}
-          disabled={isLoading || isListening}
-          size="sm"
-        >
-          Múltiplos Itens
-        </Button>
-      </div>
 
       <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="flex-1 overflow-y-auto p-4 space-y-6 mt-6">
@@ -334,7 +289,6 @@ export function IaComponent() {
 
           {isLoading && (
             <div className="flex gap-4">
-              {/* Indicador de Loading - Mantido */}
               <Avatar className="h-8 w-8 bg-slate-400 rounded-full flex items-center justify-center p-0">
                 <AvatarFallback className="text-white">AI</AvatarFallback>
               </Avatar>
@@ -420,6 +374,7 @@ export function IaComponent() {
           </div>
         </div>
       </div>
+      <ModeSelectionComponent isListening={isListening} isLoading={isLoading} />
     </div>
   );
 }
